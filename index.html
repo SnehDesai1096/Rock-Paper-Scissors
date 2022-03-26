@@ -1,0 +1,271 @@
+<!DocumentType html>
+<html>
+    <head>
+        <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@500&display=swap" rel="stylesheet">
+        <meta charset="UTF-8">
+        <title> Rock Paper Scissors Shoot!</title>
+		<style>
+		  *{
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+
+			img {
+				height: 150px;
+				width: 150px;
+			}
+
+			header {
+				background:white;
+				color: black;
+				text-align: center;
+				padding: 20px;   
+			}
+
+			body {
+				background: #262632;
+				font-family: 'Kanit', sans-serif;
+				color: white;
+			}
+
+			.score-board {
+				text-align: center;
+				font-size: 40px;
+				margin:20px auto;
+				border: 2px solid;
+				border-radius: 5px;
+				width: 320px;
+				height: 100px;
+				position: relative;
+				padding: 20px;
+			}
+
+			.badge {
+				background: darkmagenta;
+				font-size:15px;
+				border: 2px solid;
+				border-radius: 5px;
+			}
+
+			#user-label {
+				position: absolute;
+				top: 40px;
+				left: -40px;
+				width:80px;
+			}
+
+			#computer-label {
+				position: absolute;
+				top: 40px;
+				right: -40px;
+				background: orange;
+				width:80px;
+			}
+
+			.choices {
+			   text-align: center;
+			}
+
+			.choice{
+				display:inline-block;
+				margin:20px;
+		 
+				top: 50%;
+				border: 2px solid;
+				border-radius: 50%;
+				transition: all .4s ease;
+			}
+			
+			.result {
+				text-align:center;
+				padding: 20px;
+			}
+
+			.choice:hover {
+				background:darkmagenta;
+				cursor:pointer;
+				opacity:.8;
+				border:4px solid;
+			}
+			
+			.choice:active {
+				opacity: 1;
+				transition: .2s ease;
+			}
+
+			.choose-message {
+				position:relative;
+				margin:auto;
+				width:100%; 
+				text-align:center;
+				padding: 20px;
+			}
+			.reset{
+				background-color: orange;
+				border: none;
+				color: white;
+				padding: 10px 28px;
+				margin:auto;
+				text-align: center;
+				text-decoration: none;
+				display: inline-block;
+				text-align:center;
+				font-size: 12px;
+				cursor:pointer;
+			}
+			.d-res{
+				width:100%;
+				text-align:center;
+			}
+		</style>
+
+    </head>
+    
+    <body>
+        <header>
+            <h1>
+               Rock Paper Scissors Shoot!
+            </h1>
+        </header>
+
+        <div class = "score-board">
+            <div id="user-label" class="badge"> user </div> 
+            <div id="computer-label" class="badge"> computer </div> 
+            <span id="user-score"> 0 </span> 
+            <span> : </span>
+            <span id="computer-score"> 0 </span>
+        </div>
+
+        <div class = "result">
+            <p> Paper beats Rock! Rock beats Scissors! Scissors beats Paper!</p>
+        </div>
+
+        <div class = "choices">
+
+            <div class = "choice" id = "r">
+                <img src = "rock.png" alt ="">
+            </div>
+
+            <div class = "choice" id = "p">
+                <img src = "paper.png" alt ="">
+            </div>
+
+            <div class = "choice" id = "s">
+                <img src = "scissors.png" alt ="">
+            </div>
+
+        </div>
+
+        <div class = "choose-message">
+            Choose Your Weapon!
+        </div>
+		
+		<div class="d-res" id='res'>
+			<p class="reset">Reset ?</p>
+		</div>
+
+        <script>
+			let userScore = 0;
+			let computerScore = 0;
+
+			const userScore_span = document.getElementById("user-score");
+			const computerScore_span = document.getElementById("computer-score");
+			const scoreBoard_div = document.querySelector(".score-board");
+			const result_p = document.querySelector(".result > p");
+			const rock_div = document.getElementById("r");
+			const paper_div = document.getElementById("p");
+			const scissors_div = document.getElementById("s");
+			const reset_div = document.getElementById("res");
+
+			function main() {
+			  rock_div.addEventListener("click", function () {
+				game("r");
+			  });
+
+			  paper_div.addEventListener("click", function () {
+				game("p");
+			  });
+
+			  scissors_div.addEventListener("click", function () {
+				game("s");
+			  });
+			  reset_div.addEventListener("click", function () {
+				reset("s");
+			  });
+			}
+
+			function reset(){
+				console.log("On click ")
+				userScore = 0
+				computerScore = 0
+				userScore_span.innerHTML = userScore;
+				computerScore_span.innerHTML = computerScore;
+			}
+			
+			function translateChoice(choice){
+			  if(choice === "r")
+			  {
+				return "Rock";
+			  }
+			  else if (choice === "p")
+			  {
+				return "Paper";
+			  }
+			  else if(choice === "s")
+			  {
+				return "Scissors";
+			  }
+			}
+
+			function getComputerChoice() {
+			  const choices = ["r", "p", "s"];
+			  const randomNumber = Math.floor(Math.random() * 3);
+			  return choices[randomNumber];
+			}
+
+			function win(userChoice, computerChoice) {
+			  userScore++;
+			  userScore_span.innerHTML = userScore;
+			  computerScore_span.innerHTML = computerScore;
+			  result_p.innerHTML = translateChoice(userChoice) + " beats " + translateChoice(computerChoice) + ". You win!";
+			}
+
+			function lose(userChoice, computerChoice) {
+			  computerScore++;
+			  userScore_span.innerHTML = userScore;
+			  computerScore_span.innerHTML = computerScore;
+			  result_p.innerHTML =
+				translateChoice(userChoice) + " loses to " + translateChoice(computerChoice) + ". You lose!";
+			}
+
+			function tie(userChoice, computerChoice) {
+			  result_p.innerHTML =
+				translateChoice(userChoice) + " ties with " + translateChoice(computerChoice) + ". You tied!";
+			}
+
+			function game(userChoice) {
+			  const computerChoice = getComputerChoice();
+
+			  switch (userChoice + computerChoice) {
+				case "rs":
+				case "pr":
+				case "sp":
+				  win(userChoice, computerChoice);
+				  break;
+				case "rp":
+				case "ps":
+				case "sr":
+				  lose(userChoice, computerChoice);
+				  break;
+				case "rr":
+				case "pp":
+				case "ss":
+				  tie(userChoice, computerChoice);
+				  break;
+			  }
+			}
+			main();
+		</script>
+    </body>
+</html>
